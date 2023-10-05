@@ -6,11 +6,12 @@ exports.getOne = (cryptoId) => Crypto.findById(cryptoId).populate("owner");
 
 exports.create = (cryptoData) => Crypto.create(cryptoData);
 
-exports.buy = async (cryptoId, user) => {
+exports.buy = async (cryptoId, userId) => {
 
     const crypto = await Crypto.findById(cryptoId);
 
-    crypto.purchased.push({user: user});
+    crypto.purchased.push(userId);
 
     return crypto.save();
+
 }

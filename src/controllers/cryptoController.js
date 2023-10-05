@@ -34,24 +34,19 @@ router.get("/:cryptoId/details", async (req, res) => {
     const crypto = await cryptoManager.getOne(cryptoId).populate("purchased.user").lean();
 
     const isOwner = req.user?._id == crypto.owner._id; // checking if there is a user id
-
-    console.log(crypto);
-
-    res.render("crypto/details", { crypto, isOwner });
+    const isBuyer = crypto.purchased.some(id => id == req.user?._id);
+    
+    res.render("crypto/details", { crypto, isOwner, isBuyer});
 });
 
 router.post("/:cryptoId/buy", isAuth, async (req, res) => {
     const cryptoId = req.params.cryptoId;
-    const cryptoData = req.body;
-    const user = req.user._id;
+    const userId = req.user._id;
 
     try{
 
-    await cryptoManager.buy(cryptoId, user)
-
-    const current = await cryptoManager.getOne(cryptoId).lean();
-    console.log(`this is current ${current.purchased}`);
-
+    await cryptoManager.buy(cryptoId, userId)
+  
     res.redirect(`/crypto/${cryptoId}/details`);
 
     } catch (err) {
