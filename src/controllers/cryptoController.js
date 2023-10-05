@@ -7,7 +7,7 @@ router.get("/", async (req, res) => {
 
     const crypto = await cryptoManager.getAll().lean();
 
-    res.render("crypto");
+    res.render("crypto", {crypto} );
 });
 
 router.get("/create", isAuth, (req, res) => {
@@ -27,5 +27,7 @@ router.post("/create", isAuth, async (req, res) => {
         res.render("crypto/create", { error: getErrorMessage(err) });
     }
 });
+
+
 
 module.exports = router;
