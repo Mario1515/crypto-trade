@@ -26,7 +26,7 @@ const cryptoSchema = new mongoose.Schema({
         ref: "User",
     },
 
-    comments: [
+    cryptos: [
         {
             user: {
                 type: mongoose.Types.ObjectId,
@@ -37,6 +37,6 @@ const cryptoSchema = new mongoose.Schema({
     ]
 });
 
-const Photo = mongoose.model("Photo", photoSchema);
+const Crypto = mongoose.model("Crypto", cryptoSchema);
 
-module.exports = Photo;
+module.exports = Crypto;
