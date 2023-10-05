@@ -26,7 +26,7 @@ const cryptoSchema = new mongoose.Schema({
         ref: "User",
     },
 
-    cryptos: [
+    purchased: [
         {
             user: {
                 type: mongoose.Types.ObjectId,
