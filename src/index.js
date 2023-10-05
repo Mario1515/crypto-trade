@@ -3,8 +3,10 @@ const express = require("express");
 const handlebars = require("express-handlebars");
 const path = require("path");
 const mongoose = require("mongoose");
+const cookieParser = require("cookie-parser");
 
 //imports from folders
+const { auth } = require("./middlewares/authMiddleware");
 const routes = require("./routes");
 
 //app
@@ -26,6 +28,8 @@ app.set("views", "src/views");
 // app use.
 app.use(express.static(path.resolve(__dirname, "public")));
 app.use(express.urlencoded({extended: false}));
+app.use(cookieParser());
+app.use(auth);
 app.use(routes);
 
 app.listen(PORT, console.log(`Server is listening on port 3000...`));
