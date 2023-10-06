@@ -15,3 +15,4 @@ exports.buy = async (cryptoId, userId) => {
     return crypto.save();
 
 }
+exports.delete = (cryptoId) => Crypto.findByIdAndDelete(cryptoId);

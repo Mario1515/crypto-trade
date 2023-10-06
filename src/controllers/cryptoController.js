@@ -33,8 +33,8 @@ router.get("/:cryptoId/details", async (req, res) => {
 
     const crypto = await cryptoManager.getOne(cryptoId).populate("purchased.user").lean();
 
-    const isOwner = req.user?._id == crypto.owner._id; // checking if there is a user id
-    const isBuyer = crypto.purchased.some(id => id == req.user?._id);
+    const isOwner = req.user?._id == crypto.owner._id; // checking if this is the creater
+    const isBuyer = crypto.purchased.some(id => id == req.user?._id); //checking if is the buyer
     
     res.render("crypto/details", { crypto, isOwner, isBuyer});
 });
@@ -54,6 +54,19 @@ router.post("/:cryptoId/buy", isAuth, async (req, res) => {
         console.log(err);
     }
 
+});
+
+router.get("/:cryptoId/delete", isAuth,  async (req,res) => {
+    const cryptoId = req.params.cryptoId;
+    
+        try {
+            await cryptoManager.delete(cryptoId);
+    
+            res.redirect("/crypto");
+        } catch (err){
+            res.render("404");
+            console.log(`Error while deleting ${cryptoId}, error: ${err}`);
+        }
 });
 
 
