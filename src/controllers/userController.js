@@ -24,8 +24,15 @@ router.get("/register", (req, res) => {
 
 router.post("/register", async (req, res) => {
     const { username, email, password, repeatPassword } = req.body;
+
+    //validate password length
+    if(password.length < 4){
+        const err = new Error("Password must be at least 4 characters");
+        res.render("users/register", {error: getErrorMessage(err)});
+   }
+   
     try {
- 
+    
     const token = await userManager.register({ username, email, password, repeatPassword });
     res.cookie("token", token);
     res.redirect("/");

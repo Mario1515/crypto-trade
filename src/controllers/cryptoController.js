@@ -92,5 +92,15 @@ router.post("/:cryptoId/edit", isAuth, async (req, res) => {
 
 });
 
+router.get("/search", async (req, res) => {
+    const {name, payment} = req.query;
+
+    console.log(name);
+    
+    const crypto = await cryptoManager.search(name, payment);
+
+    res.render("search", {crypto});
+});
+
 
 module.exports = router;
