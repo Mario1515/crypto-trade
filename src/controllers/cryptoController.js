@@ -69,5 +69,28 @@ router.get("/:cryptoId/delete", isAuth,  async (req,res) => {
         }
 });
 
+router.get("/:cryptoId/edit", isAuth, async (req, res) => {
+    const crypto = await cryptoManager.getOne(req.params.cryptoId).lean();
+
+    res.render(`crypto/edit`, { crypto });
+});
+
+router.post("/:cryptoId/edit", isAuth, async (req, res) => {
+    const cryptoData = req.body;
+    const cryptoId = req.params.cryptoId;
+
+    try{
+
+    await cryptoManager.edit(cryptoId, cryptoData);
+
+    res.redirect(`/crypto/${cryptoId}/details`);
+
+    } catch (err) {
+        const crypto = await cryptoManager.getOne(cryptoId).populate("purchased.user").lean();
+        res.render("crypto/edit", {error: "Unable to edit photo", crypto}); //to check
+    }
+
+});
+
 
 module.exports = router;
